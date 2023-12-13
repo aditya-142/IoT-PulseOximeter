@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Health Monitoring</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Health Monitoring</h1>
+<p><strong>Pulse:</strong> <span id="pulseValue">---</span></p>
+<p><strong>Oxygen Level:</strong> <span id="oxygenValue">---</span></p>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.1.0/mqttws31.min.js"></script>
+<script>
+  // MQTT broker details
+  const broker = "io.adafruit.com";
+  const port = 1883;
+  const username = "adisharma1400";
+  const password = "aio_EPrf93yV1ZBxHeYibWkLzYJxm0ib";
+
+  // MQTT topics
+  const pulseTopic = `${username}/feeds/pulse`;  // Added quotes
+  const oxygenTopic = `${username}/feeds/oxygen`;  // Added quotes
+
+  // Create MQTT client
+  const client = new Paho.MQTT.Client(broker, port, "web_" + parseInt(Math.random() * 100, 10));
+
+  // Set callback functions
+  client.onConnectionLost = onConnectionLost;
+  client.onMessageArrived = onMessageArrived;
+
+  // Connect to MQTT broker
+  client.connect({
+    onSuccess: onConnect,
+    userName: username,
+    password: password,
+  });
+
+  function onConnect() {
+    console.log("Connected to MQTT broker");
+    client.subscribe(pulseTopic);
+    client.subscribe(oxygenTopic);
+  }
+
+  function onConnectionLost(responseObject) {
+    if (responseObject.errorCode !== 0) {
+      console.log("Connection lost: " + responseObject.errorMessage);
+    }
+  }
+
+  function onMessageArrived(message) {
+    const payload = message.payloadString;
+
+    if (message.destinationName === pulseTopic) {
+      displayData("pulseValue", payload);
+    } else if (message.destinationName === oxygenTopic) {
+      displayData("oxygenValue", payload);
+    }
+  }
+
+  function displayData(elementId, payload) {
+    const element = document.getElementById(elementId);
+    if (!isNaN(parseFloat(payload)) && isFinite(payload)) {
+      // Display as a number if it's a valid number
+      element.innerText = parseFloat(payload);
+    } else {
+      // Display as a string if it's not a valid number
+      element.innerText = payload;
+    }
+  }
+</script>
+
+
+</body>
+</html>
