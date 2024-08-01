@@ -1,8 +1,6 @@
-## Pulse Oximeter using IoT project Summary
+## IoT-based Health Monitoring System
 
-**IoT-based Health Monitoring System**
-
-Designed and implemented an IoT-based health monitoring system that measures pulse rate and blood oxygen levels using a MAX30100 Pulse Oximeter sensor and transmits the data to Adafruit IO for remote monitoring. This project utilized Wi-Fi connectivity for real-time data publishing and MQTT protocol for data communication.
+Designed and implemented an IoT-based health monitoring system that measures pulse rate and blood oxygen levels using a MAX30100 Pulse Oximeter sensor and transmits the data to Adafruit IO for remote monitoring. This project utilized Wi-Fi connectivity for real-time data publishing and MQTT protocol for data communication. It then displayed the pulse rate and blood oxygen levels data in real-time on the website.
 
 **Key Contributions:**
 - **Sensor Integration:** Integrated the MAX30100 Pulse-Oximeter sensor to capture pulse and blood oxygen saturation data.
